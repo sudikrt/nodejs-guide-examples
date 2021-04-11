@@ -1,7 +1,4 @@
 //root file node js file execute
-
-const http = require('http');
-
 const express = require ('express');
 
 const app = express (); //express as function
@@ -18,6 +15,4 @@ app.use ( (req, res, next) => {
     res.send ('<h1>Hello</h1>');
 });
 
-const server = http.createServer(app);
-
-server.listen(5001);``
+app.listen(5001);
