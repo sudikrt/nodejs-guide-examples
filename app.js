@@ -10,6 +10,7 @@ const shopRoutes =  require ('./routes/shop');
 //app.use (express.json ()); // registers a midlleware   the request body parsing
 app.use (bodyParser.urlencoded ({extended : false})); // registers a midlleware   the request body parsing
 
+app.use (express.static (path.join (__dirname, 'public')))
 app.use ('/admin', adminRoutes);
 app.use (shopRoutes);
 
