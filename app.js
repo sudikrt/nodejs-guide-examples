@@ -4,7 +4,7 @@ const path = require ('path');
 const expessHbs = require ('express-handlebars');
 
 const app = express (); //express as function
-app.engine ('handlebars', expessHbs ());
+app.engine ('handlebars', expessHbs ({layoutsDir:'views/layouts/', defaultLayout: 'main-layout'}));
 app.set ('view engine', 'handlebars');
 const adminRoutes =  require ('./routes/admin');
 const shopRoutes =  require ('./routes/shop');
