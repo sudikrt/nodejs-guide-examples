@@ -6,3 +6,4 @@ const pool = mysql.createPool ({
     password : 'drive@123'
 });
 
+module.exports = pool.promise ();
