@@ -1,9 +1,20 @@
-const mysql = require ('mysql2');
-const pool = mysql.createPool ({
-    host : 'localhost',
-    user : 'root',
-    database : 'node-complete',
-    password : 'drive@123'
+const Sequelize = require ('sequelize');
+const mysql = require('mysql2/promise');
+const dbName = 'node-complete';
+
+// initilize ();
+
+// async function initilize () {
+    
+//     const connection = await mysql.createConnection({ host : 'localhost', user : 'root', password : 'drive@123' });
+//     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
+// }
+
+const sequelize = new Sequelize (dbName, 'root', 'drive@123', {
+    dialect : 'mysql',
+    host : 'localhost'
 });
 
-module.exports = pool.promise ();
+module.exports = sequelize;
+
+
