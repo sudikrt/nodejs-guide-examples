@@ -2,38 +2,46 @@ const Product = require ('../models/product');
 const Cart = require ('../models/cart');
 
 exports.getProducts = (req, res, next) => {
-    Product.fetchAll ( ([rows, fieldData]) => {
+
+    Product.findAll ().then (products => {
         return res.render ('shop/product-list', {
-            prods : rows, 
+            prods : products, 
             docTitle : 'All Products', 
             path : '/products', 
-            hasProducts : rows.length > 0, 
+            hasProducts : products.length > 0, 
             activeShop : true, 
             productCSS : true});
+    }).catch ( errors => {
+        console.log ('err : ' + errors)
     });
 }
 exports.getProduct = (req, res, next) => {
     const productId = req.params.productId;
     console.log ();
-    Product.findById (productId)
-    .then ( ([product]) => {
-            res.render ('shop/product-detail', {product : product[0], docTitle : product.title, path : '/products'})
+    Product.findAll ({where : {id : productId}})
+    .then ( (products) => {
+            res.render ('shop/product-detail', {product : products[0], docTitle : products[0].title, path : '/products'})
         }
-    )
-    .cathc (err => console.log (err));
+    ).catch (err => console.log (err));
+    // Product.findByPk (productId)
+    // .then ( (product) => {
+    //         res.render ('shop/product-detail', {product : product, docTitle : product.title, path : '/products'})
+    //     }
+    // ).catch (err => console.log (err));
 }
 
 exports.getIndex = (req, res, next) => {
-    Product.fetchAll ()
-        .then (([rows, fieldData]) => {
-            return res.render ('shop/index', {
-                prods : rows, 
-                docTitle : 'Shop', 
-                path : '/shop', 
-                hasProducts : products.length > 0, 
-                activeShop : true, 
-                productCSS : true});
-        }).catch (error => console.log ('err : ' + console.error()));
+    Product.findAll ().then (products => {
+        return res.render ('shop/index', {
+            prods : products, 
+            docTitle : 'Shop', 
+            path : '/shop', 
+            hasProducts : products.length > 0, 
+            activeShop : true, 
+            productCSS : true});
+    }).catch ( errors => {
+        console.log ('err : ' + errors)
+    });
 }
 
 exports.getCart = (req, res, next) => {
