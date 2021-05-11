@@ -1,5 +1,4 @@
 const Product = require ('../models/product');
-const Cart = require ('../models/cart');
 
 exports.getProducts = (req, res, next) => {
 
@@ -130,24 +129,55 @@ exports.postCartDeleteItem = (req, res, next) => {
     //     res.redirect ('/cart');
     // });
 }
+exports.postOrder = (req, res, next) => {
+    let fetchedCart;
+    req.user.getCart ().then (cart => {
+        fetchedCart = cart;
+        return cart.getProducts ();
+    }).then (products => {
+        return req.user
+        .createOrder ()
+        .then (order => {
+                order.addProducts (products.map (product => {
+                    product.orderItem = {
+                        quantity : product.cartItem.quantity
+                    }
+                    return product;
+                })
+            )
+        }).catch (error => {
+            console.log (error);
+        });
+    }).then (result => {
+        return fetchedCart.setProducts (null);
+    }).then (cart => {
+        res.redirect ('/orders');
+    })
+    .catch (error => {
+        console.log (error);
+    })
+}
 
 
 
 exports.getOrders = (req, res, next) => {
-    Product.fetchAll ( products => {
+    req.user.getOrders ({include : ['products']}).then (orders => {
+        console.log (orders);
         return res.render ('shop/orders', {
-            prods : products, 
+            orders : orders, 
             docTitle : 'Orders', 
             path : '/orders', 
         });
-    });
+    }).catch (error => {
+        console.log (error);
+    })
 }
-exports.getCheckout = (req, res, next) => {
-    Product.fetchAll ( products => {
-        return res.render ('shop/checkout', {
-            prods : products, 
-            docTitle : 'Checkout', 
-            path : '/checkout'
-        });
-    });
-}
+// exports.getCheckout = (req, res, next) => {
+//     Product.fetchAll ( products => {
+//         return res.render ('shop/checkout', {
+//             prods : products, 
+//             docTitle : 'Checkout', 
+//             path : '/checkout'
+//         });
+//     });
+// }
