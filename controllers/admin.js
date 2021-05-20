@@ -16,13 +16,9 @@ exports.addNewProduct = (req, res, next)=> {
     const price = req.body.price;
     const description = req.body.description;
 
+    const product = new Product (title, price, description, imgUrl);
     // sequelize automaticlly adds special methods as soon as we create the association
-    req.user.createProduct ({
-        title : title,
-        price : price,
-        imgUrl : imgUrl,
-        description : description
-    }).then ( result => {
+    product.save ().then ( result => {
         console.log (result);
         console.log ('Created a product');
         res.redirect ('/admin/products');

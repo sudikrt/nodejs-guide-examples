@@ -26,11 +26,11 @@ app.use ((req,res, next) => {
     next ();
 })
 
-// app.use ('/admin', adminRoutes);
+app.use ('/admin', adminRoutes);
 // app.use (shopRoutes);
 
 app.use ('/', erorController.get404);
 
 mongoConnect(() => {
-    app.listen ('5001');
+    app.listen (5002);
 })
