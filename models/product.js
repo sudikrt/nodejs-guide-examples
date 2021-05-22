@@ -11,6 +11,16 @@ class Product {
         const db = getDb  ();
         return db.collection ('products').insertOne (this).then (result => console.log (result)).catch (error => console.log (error));
     }
+    static findAll () {
+        const db = getDb  ();
+        return db.collection ('products')
+        .find ()
+        .toArray ()
+        .then (product => product)
+        .catch (error => {
+            console.log (error); 
+        })
+    }
 }
 
 
