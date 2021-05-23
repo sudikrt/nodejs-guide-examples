@@ -16,17 +16,12 @@ exports.getProducts = (req, res, next) => {
 }
 exports.getProduct = (req, res, next) => {
     const productId = req.params.productId;
-    console.log ();
-    Product.findAll ({where : {id : productId}})
-    .then ( (products) => {
-            res.render ('shop/product-detail', {product : products[0], docTitle : products[0].title, path : '/products'})
+
+    Product.findById (productId)
+    .then ( (product) => {
+            res.render ('shop/product-detail', {product : product, docTitle : product.title, path : '/products'})
         }
     ).catch (err => console.log (err));
-    // Product.findByPk (productId)
-    // .then ( (product) => {
-    //         res.render ('shop/product-detail', {product : product, docTitle : product.title, path : '/products'})
-    //     }
-    // ).catch (err => console.log (err));
 }
 
 exports.getIndex = (req, res, next) => {
