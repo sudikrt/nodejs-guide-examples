@@ -1,4 +1,7 @@
 const Product = require ('../models/product');
+const mongoDB = require ('mongodb');
+
+const ObjectId = mongoDB.ObjectId;
 
 exports.getAddProduct = (req, res, next) => {
     res.render ('admin/edit-product', 
@@ -45,23 +48,8 @@ exports.getEditProduct = (req, res, next) => {
     if (!editMode) {
         res.redirect ('/');
     }
-    // Product.findByPk (req.params.productid)
-    // .then (product => {
-    //     res.render ('admin/edit-product', 
-    //         {'docTitle' : 'Edit Product', 
-    //             path:'/admin/edit-product', 
-    //             editing : editMode,
-    //             product : product
-    //         }
-    //     );
-    // }).catch (err => {
-    //     console.log (err);
-    //     res.redirect ('/'); 
-    // });
-
-    //you can leveage user.getProducts ()
-    req.user.getProducts ({ where : {id : req.params.productid}}).then (products => {
-        const product = products[0];
+    Product.findById (req.params.productid)
+    .then (product => {
         res.render ('admin/edit-product', 
             {'docTitle' : 'Edit Product', 
                 path:'/admin/edit-product', 
@@ -73,6 +61,21 @@ exports.getEditProduct = (req, res, next) => {
         console.log (err);
         res.redirect ('/'); 
     });
+
+    //you can leveage user.getProducts ()
+    // req.user.getProducts ({ where : {id : req.params.productid}}).then (products => {
+    //     const product = products[0];
+    //     res.render ('admin/edit-product', 
+    //         {'docTitle' : 'Edit Product', 
+    //             path:'/admin/edit-product', 
+    //             editing : editMode,
+    //             product : product
+    //         }
+    //     );
+    // }).catch (err => {
+    //     console.log (err);
+    //     res.redirect ('/'); 
+    // });
 }
 exports.getProducts = (req, res, next) => {
     // Product.fetchAll ( products => {
@@ -100,16 +103,14 @@ exports.postEditProduct = (req, res, next) => {
     const price = req.body.price;
     const description = req.body.description;
 
-    Product.findByPk (productId)
-    .then (product => {
-        product.title = title;
-        product.imgUrl = imgUrl;
-        product.price = price;
-        product.description = description;
-
-        return product.save ();
-    })
-    .then (product => {
+    const product = new Product (
+        title,
+        price,
+        description,
+        imgUrl,
+        new ObjectId (productId)
+    );
+    product.save ().then (product => {
         res.redirect ('/admin/products');   
     })
     .catch (error => {
