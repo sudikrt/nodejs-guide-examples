@@ -2,7 +2,6 @@ const path = require ('path')
 const express = require ('express');
 const router = express.Router ();
 
-new mongoDB.ObjectId 
 const adminController = require ('../controllers/admin');
 
 router.get ('/add-product',  adminController.getAddProduct);
