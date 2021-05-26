@@ -6,7 +6,7 @@ class Product {
         this.price = price;
         this.description = description;
         this.imgUrl = imgUrl;
-        this._id = new mongoDB.ObjectId id;
+        this._id = id ? new mongoDB.ObjectId(id) : null;
     }
     save () {
         const db = getDb  ();
@@ -33,6 +33,11 @@ class Product {
     static findById (productId) {
         const db = getDb ();
         return db.collection ('products').find ({_id : new mongoDB.ObjectId(productId)}).next ().then (product => product).catch (error => console.log ('error'));
+    }
+
+    static deleteById (productId) {
+        const db = getDb ();
+        return db.collection ('products').deleteOne ({_id : new mongoDB.ObjectId (productId)}).then  (result => console.log ('deleted')).catch (error => console.log  (error));
     }
 }
 
