@@ -10,6 +10,7 @@ const shopRoutes =  require ('./routes/shop');
 const erorController = require ('./controllers/error');
 
 const mongoConnect = require ('./utils/database').mongoConnect;
+const User = require ('./models/user');
 
 //app.use (express.json ()); // registers a midlleware   the request body parsing
 app.use (bodyParser.urlencoded ({extended : false})); // registers a midlleware   the request body parsing
@@ -17,12 +18,12 @@ app.use (bodyParser.urlencoded ({extended : false})); // registers a midlleware 
 app.use (express.static (path.join (__dirname, 'public')))
 
 app.use ((req,res, next) => {
-    // User.findByPk (1).then (user => {
-    //     req.user = user;
-    //     next ();
-    // }).catch (error => {
-    //     console.log (error);
-    // })
+    User.findByPk ("").then (user => {
+        req.user = user;
+        next ();
+    }).catch (error => {
+        console.log (error);
+    })
     next ();
 })
 
