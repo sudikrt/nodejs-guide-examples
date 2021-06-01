@@ -4,7 +4,7 @@ const Product = require ('../models/product');
 exports.getAddProduct = (req, res, next) => {
     res.render ('admin/edit-product', 
         {'docTitle' : 'Add Product', 
-            path:'/admin/edit-product', 
+            path:'/admin/add-product', 
             activeAddProduct : true, 
             formCSS : true,
             editing : false
@@ -17,7 +17,7 @@ exports.addNewProduct = (req, res, next)=> {
     const price = req.body.price;
     const description = req.body.description;
 
-    const product = new Product (title, price, description, imgUrl);
+    const product = new Product (title, price, description, imgUrl, null, req.user._id);
     
     product.save ().then ( result => {
         console.log (result);

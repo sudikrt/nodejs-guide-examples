@@ -18,13 +18,13 @@ app.use (bodyParser.urlencoded ({extended : false})); // registers a midlleware 
 app.use (express.static (path.join (__dirname, 'public')))
 
 app.use ((req,res, next) => {
-    User.findByPk ("").then (user => {
+    User.findById ("60b5daf8307517723e29cc91").then (user => {
         req.user = user;
         next ();
     }).catch (error => {
         console.log (error);
     })
-    next ();
+    //next ();
 })
 
 app.use ('/admin', adminRoutes);
@@ -33,5 +33,5 @@ app.use (shopRoutes);
 app.use ('/', erorController.get404);
 
 mongoConnect(() => {
-    app.listen (5002);
+    app.listen (5004);
 })

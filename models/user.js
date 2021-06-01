@@ -1,4 +1,4 @@
-const dbRef = require ('../utils/database');
+const dbRef = require ('../utils/database').getDb;
 const mongoDB = require ('mongodb');
 
 const ObjectId = mongoDB.ObjectId;
