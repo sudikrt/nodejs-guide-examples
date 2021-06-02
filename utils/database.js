@@ -1,20 +1,30 @@
-const Sequelize = require ('sequelize');
-const mysql = require('mysql2/promise');
-const dbName = 'node-complete';
+const mongodb = require ('mongodb');
+const MongoClient = mongodb.MongoClient;
 
-// initilize ();
+let _db;
 
-// async function initilize () {
-    
-//     const connection = await mysql.createConnection({ host : 'localhost', user : 'root', password : 'drive@123' });
-//     await connection.query(`CREATE DATABASE IF NOT EXISTS \`${dbName}\`;`);
-// }
+const mongoConnect = (callback) => {
+    MongoClient.connect (
+        'mongodb+srv://I3oGP0zw8HbAQE9q:1mjuPSWejBh13JHX@cluster0.gtc5u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+        { useUnifiedTopology: true }
+    ).then (result => {
+        console.log ('connected');
+        _db = result.db ();
+        callback ();
+    }).catch (error => {
+        console.log ('err :' + error);
+        throw error;
+    })
+}
 
-const sequelize = new Sequelize (dbName, 'root', 'drive@123', {
-    dialect : 'mysql',
-    host : 'localhost'
-});
+const getDb = () => {
+    if (_db) {
+        return _db;
+    }
+    throw 'No database found !';
+}
 
-module.exports = sequelize;
+// module.exports = mongoConnect;
 
-
+exports.mongoConnect = mongoConnect;
+exports.getDb = getDb;
