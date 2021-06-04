@@ -1,6 +1,8 @@
 const express = require ('express');
 const bodyParser = require ('body-parser');
 const path = require ('path');
+const mongoose = require ('mongoose');
+
 
 const app = express (); //express as function
 
@@ -31,6 +33,11 @@ app.use (shopRoutes);
 
 app.use ('/', erorController.get404);
 
-mongoConnect(() => {
+mongoose.connect (
+    'mongodb+srv://I3oGP0zw8HbAQE9q:1mjuPSWejBh13JHX@cluster0.gtc5u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+).then (() => {
     app.listen (5004);
+}).catch (error => {
+    console.log (error);
 })
+
