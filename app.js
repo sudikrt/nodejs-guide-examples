@@ -11,7 +11,6 @@ const adminRoutes =  require ('./routes/admin');
 const shopRoutes =  require ('./routes/shop');
 const erorController = require ('./controllers/error');
 
-const mongoConnect = require ('./utils/database').mongoConnect;
 const User = require ('./models/user');
 
 //app.use (express.json ()); // registers a midlleware   the request body parsing
