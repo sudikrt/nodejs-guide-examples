@@ -17,7 +17,14 @@ exports.addNewProduct = (req, res, next)=> {
     const price = req.body.price;
     const description = req.body.description;
 
-    const product = new Product (title, price, description, imgUrl, null, req.user._id);
+    const product = new Product (
+        {
+            title : title, 
+            price : price, 
+            description : description, 
+            imgUrl : imgUrl
+        }
+    );
     
     product.save ().then ( result => {
         console.log (result);

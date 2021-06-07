@@ -11,21 +11,21 @@ const adminRoutes =  require ('./routes/admin');
 const shopRoutes =  require ('./routes/shop');
 const erorController = require ('./controllers/error');
 
-const User = require ('./models/user');
+// const User = require ('./models/user');
 
 //app.use (express.json ()); // registers a midlleware   the request body parsing
 app.use (bodyParser.urlencoded ({extended : false})); // registers a midlleware   the request body parsing
 
 app.use (express.static (path.join (__dirname, 'public')))
 
-app.use ((req,res, next) => {
-    User.findById ("60b5daf8307517723e29cc91").then (user => {
-        req.user = new User (user.name, user.email, user.cart, user._id);
-        next ();
-    }).catch (error => {
-        console.log (error);
-    })
-})
+// app.use ((req,res, next) => {
+//     User.findById ("60b5daf8307517723e29cc91").then (user => {
+//         req.user = new User (user.name, user.email, user.cart, user._id);
+//         next ();
+//     }).catch (error => {
+//         console.log (error);
+//     })
+// })
 
 app.use ('/admin', adminRoutes);
 app.use (shopRoutes);
