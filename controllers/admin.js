@@ -56,7 +56,7 @@ exports.getEditProduct = (req, res, next) => {
 }
 exports.getProducts = (req, res, next) => {
     
-    Product.findAll ().then (products => {
+    Product.find ().then (products => {
         return res.render ('admin/products', {
             prods : products, 
             docTitle : 'Admin Products', 
@@ -74,14 +74,15 @@ exports.postEditProduct = (req, res, next) => {
     const price = req.body.price;
     const description = req.body.description;
 
-    const product = new Product (
-        title,
-        price,
-        description,
-        imgUrl,
-        productId
-    );
-    product.save ().then (product => {
+    Product.findById (productId)
+    .then (product => {
+        product.title = title;
+        product.imgUrl = imgUrl;
+        product.price = price;
+        product.description = description ;
+        return product.save ()
+    })
+    .then (product => {
         res.redirect ('/admin/products');   
     })
     .catch (error => {
