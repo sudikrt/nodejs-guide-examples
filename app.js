@@ -9,6 +9,7 @@ const app = express (); //express as function
 app.set ('view engine', 'ejs');
 const adminRoutes =  require ('./routes/admin');
 const shopRoutes =  require ('./routes/shop');
+const authRoutes =  require ('./routes/auth');
 const erorController = require ('./controllers/error');
 
 const User = require ('./models/user');
@@ -29,7 +30,7 @@ app.use ((req,res, next) => {
 
 app.use ('/admin', adminRoutes);
 app.use (shopRoutes);
-
+app.use (authRoutes);
 app.use ('/', erorController.get404);
 
 mongoose.connect (
