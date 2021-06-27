@@ -1,3 +1,5 @@
+const User = require ('../models/user');
+
 exports.getLogin = (req, res, next) => {
     let cookies = {};
     if (req.get ('Cookie')) {
@@ -21,8 +23,13 @@ exports.getLogin = (req, res, next) => {
 exports.postLogin = (req, res, next) => {
     console.log (req.session);
     //res.setHeader ('Set-Cookie', 'loggedIn=true; Max-age=10; Secure');
-    req.session.loggedIn = true;
-
-    console.log (req.session);
-    res.redirect ('/');
+    app.use ((req,res, next) => {
+        User.findById ("60b5daf8307517723e29cc91").then (user => {
+            req.session.user = user;
+            req.session.loggedIn = true;
+            res.redirect ('/');
+        }).catch (error => {
+            console.log (error);
+        })
+    })
 }
