@@ -24,7 +24,7 @@ exports.addNewProduct = (req, res, next)=> {
             price : price, 
             description : description, 
             imgUrl : imgUrl,
-            userId : req.session.user
+            userId : req.user
         }
     );
     
