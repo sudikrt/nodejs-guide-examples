@@ -11,7 +11,7 @@ exports.getProducts = (req, res, next) => {
             hasProducts : products.length > 0, 
             activeShop : true, 
             productCSS : true,
-            isAuthenticated : req.isLoggedIn});
+            isAuthenticated : req.session.isLoggedIn});
     }).catch ( errors => {
         console.log ('err : ' + errors)
     });
@@ -22,7 +22,7 @@ exports.getProduct = (req, res, next) => {
     Product.findById (productId)
     .then ( (product) => {
             res.render ('shop/product-detail', {product : product, docTitle : product.title, path : '/products',
-            isAuthenticated : req.isLoggedIn})
+            isAuthenticated : req.session.isLoggedIn})
         }
     ).catch (err => console.log (err));
 }
@@ -36,7 +36,7 @@ exports.getIndex = (req, res, next) => {
             hasProducts : products.length > 0, 
             activeShop : true, 
             productCSS : true,
-            isAuthenticated : req.isLoggedIn});
+            isAuthenticated : req.session.isLoggedIn});
     }).catch ( errors => {
         console.log ('err : ' + errors)
     });
@@ -53,7 +53,7 @@ exports.getCart = (req, res, next) => {
             docTitle : 'Your cart', 
             path : '/cart', 
             products : products,
-            isAuthenticated : req.isLoggedIn
+            isAuthenticated : req.session.isLoggedIn
         });
     }).catch (error => {
         console.log ('error');
@@ -112,7 +112,7 @@ exports.getOrders = (req, res, next) => {
             orders : orders, 
             docTitle : 'Orders', 
             path : '/orders', 
-            isAuthenticated : req.isLoggedIn
+            isAuthenticated : req.session.isLoggedIn
         });
     }).catch (error => {
         console.log (error);

@@ -26,7 +26,10 @@ exports.postLogin = (req, res, next) => {
     User.findById ("60b5daf8307517723e29cc91").then (user => {
         req.session.user = user;
         req.session.isLoggedIn = true;
-        res.redirect ('/');
+        req.session.save ( error => {
+            console.log (error);
+            res.redirect ('/');
+        });
     }).catch (error => {
         console.log (error);
     })
