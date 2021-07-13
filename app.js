@@ -5,6 +5,8 @@ const mongoose = require ('mongoose');
 const session = require ('express-session');
 const MongoDBStore = require ('connect-mongodb-session')(session);
 
+const csrf = require ('csurf');
+
 const MONGODB_URI = 'mongodb+srv://I3oGP0zw8HbAQE9q:1mjuPSWejBh13JHX@cluster0.gtc5u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
 
 const app = express (); //express as function
@@ -12,6 +14,8 @@ const store = new MongoDBStore ({
     uri : MONGODB_URI,
     collection : 'sessions'
 });
+
+const csrfProtection = csrf ();
 
 
 app.set ('view engine', 'ejs');
@@ -34,6 +38,9 @@ app.use (session ({
     store : store
 }));
 
+app.use (csrfProtection);
+
+
 app.use ( (req,res, next) => {
     if (!req.session.user) {
         return next ();
@@ -44,6 +51,12 @@ app.use ( (req,res, next) => {
     }).catch (error => {
         console.log (error);
     })
+})
+
+app.use ( (req, res, next) => {
+    res.locals.isAuthenticated = req.session.isLoggedIn;
+    res.locals.csrfToken = req.csrfToken ();
+    next ();
 })
 app.use ('/admin', adminRoutes);
 app.use (shopRoutes);
