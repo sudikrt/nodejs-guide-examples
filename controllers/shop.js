@@ -35,8 +35,8 @@ exports.getIndex = (req, res, next) => {
             path : '/shop', 
             hasProducts : products.length > 0, 
             activeShop : true, 
-            productCSS : true,
-            isAuthenticated : req.session.isLoggedIn});
+            productCSS : true
+        });
     }).catch ( errors => {
         console.log ('err : ' + errors)
     });
@@ -87,7 +87,7 @@ exports.postOrder = (req, res, next) => {
         });
         const order = new Order  ({
             user : {
-                name : req.user.name,
+                email : req.user.email,
                 userId : req.user
             },
             products : products
