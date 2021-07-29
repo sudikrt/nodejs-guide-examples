@@ -4,7 +4,7 @@ const path = require ('path');
 const mongoose = require ('mongoose');
 const session = require ('express-session');
 const MongoDBStore = require ('connect-mongodb-session')(session);
-
+const flash = require ('connect-flash');
 const csrf = require ('csurf');
 
 const MONGODB_URI = 'mongodb+srv://I3oGP0zw8HbAQE9q:1mjuPSWejBh13JHX@cluster0.gtc5u.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
@@ -39,7 +39,7 @@ app.use (session ({
 }));
 
 app.use (csrfProtection);
-
+app.use (flash ());
 
 app.use ( (req,res, next) => {
     if (!req.session.user) {

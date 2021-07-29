@@ -14,10 +14,17 @@ exports.getLogin = (req, res, next) => {
     // const isLoggedIn = cookies.loggedIn;
     
     console.log (req.session);
+    let errorMessage = req.flash ('error');
+    if (Array.isArray (errorMessage) && errorMessage.length > 0) {
+        errorMessage = errorMessage [0];
+    } else {
+        errorMessage = null;
+    }
     return res.render ('auth/login', {
         docTitle : 'Login', 
         path : '/login',
-        isAuthenticated : false
+        isAuthenticated : false,
+        errorMessage : errorMessage
     });
 }
 
@@ -27,6 +34,7 @@ exports.postLogin = (req, res, next) => {
     User.findOne ({email : email})
     .then (user => {
         if (!user) {
+            req.flash ('error', 'Invalid email or password.');
             return res.redirect ('/login');
         }
 
@@ -40,6 +48,7 @@ exports.postLogin = (req, res, next) => {
                     res.redirect ('/');
                 });
             } else {
+                req.flash ('error', 'Invalid email or password.');
                 return res.redirect ('/login');    
             }
         }).catch (error => {
@@ -65,6 +74,7 @@ exports.postSignup = (req, res, next) => {
     User.findOne ({email : email})
     .then (userDoc => {
         if (userDoc) {
+            req.flash ('error', 'Email already exists with given email id. Please try with different email Id');
             return res.redirect ('/signup')
         } else {
             return bCrypt.hash (password, 12)
@@ -88,10 +98,17 @@ exports.postSignup = (req, res, next) => {
 };
 
 exports.getSignup = (req, res, next) => {
+    let errorMessage = req.flash ('error');
+    if (Array.isArray (errorMessage) && errorMessage.length > 0) {
+        errorMessage = errorMessage [0];
+    } else {
+        errorMessage = null;
+    }
     res.render('auth/signup', {
       path: '/signup',
       docTitle: 'Signup',
-      isAuthenticated: false
+      isAuthenticated: false,
+      errorMessage : errorMessage
     });
 };
   
